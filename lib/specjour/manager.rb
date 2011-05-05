@@ -8,7 +8,7 @@ module Specjour
     include SocketHelper
 
     attr_accessor :project_name, :preload_spec, :preload_feature, :worker_task, :pid
-    attr_reader :worker_size, :dispatcher_uri, :registered_projects, :worker_pids, :options
+    attr_reader :worker_size, :dispatcher_uri, :registered_projects, :worker_pids, :options, :tags
 
     def self.start_quietly(options)
       manager = new options.merge(:quiet => true)
@@ -24,6 +24,7 @@ module Specjour
       @worker_task = options[:worker_task]
       @registered_projects = options[:registered_projects]
       @worker_pids = []
+      @tags = options[:tags]
       at_exit { kill_worker_processes }
     end
 
@@ -150,6 +151,7 @@ module Specjour
       exec_options << " --preload-feature #{preload_feature}" if preload_feature
       exec_options << " --log" if Specjour.log?
       exec_options << " --quiet" if quiet?
+      tags.each { |tag| exec_options << " --tags #{tag}" } if tags
       exec_options
     end
   end

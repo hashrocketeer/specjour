@@ -4,6 +4,7 @@ module Specjour
 
     def self.worker_option
       method_option :workers, :aliases => "-w", :type => :numeric, :desc => "Number of concurent processes to run. Defaults to your system's available cores."
+      method_option :tags, :type => :array
     end
 
     def self.dispatcher_option
@@ -78,6 +79,7 @@ module Specjour
     method_option :preload_feature
     method_option :task, :required => true
     method_option :quiet, :type => :boolean
+    worker_option
     def work
       handle_logging
       append_to_program_name "work"

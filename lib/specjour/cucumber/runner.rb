@@ -1,8 +1,10 @@
 module Specjour
   module Cucumber
     module Runner
-      def self.run(feature, output)
-        cli = ::Cucumber::Cli::Main.new(['--format', 'Specjour::Cucumber::DistributedFormatter', feature], output)
+      def self.run(feature, output, tags)
+        args = ['--format', 'Specjour::Cucumber::DistributedFormatter', feature]
+        args = args.unshift("--tags",  tags.join(" ")) if tags
+        cli = ::Cucumber::Cli::Main.new(args, output)
 
         Cucumber.runtime.instance_variable_set(:@configuration, cli.configuration)
         Cucumber.runtime.instance_eval do

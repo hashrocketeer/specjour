@@ -6,7 +6,7 @@ module Specjour
     include Protocol
     include SocketHelper
     attr_accessor :printer_uri
-    attr_reader :project_path, :number, :preload_spec, :preload_feature, :task
+    attr_reader :project_path, :number, :preload_spec, :preload_feature, :task, :tags
 
     def initialize(options = {})
       ARGV.replace []
@@ -16,6 +16,7 @@ module Specjour
       @preload_spec = options[:preload_spec]
       @preload_feature = options[:preload_feature]
       @task = options[:task]
+      @tags = options[:tags]
       self.printer_uri = options[:printer_uri]
       set_env_variables
       Dir.chdir(project_path)
@@ -96,7 +97,7 @@ module Specjour
     end
 
     def run_feature(feature)
-      Specjour::Cucumber::Runner.run(feature, connection)
+      Specjour::Cucumber::Runner.run(feature, connection, tags)
     end
 
     def run_spec(spec)
